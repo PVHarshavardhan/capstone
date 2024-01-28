@@ -1,1 +1,1 @@
-"capstone"
+console.log("capstone")
