@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>New Page</h1>
+    <form action="/showpage" method="post">
+        <input type="hidden" name="coursename" value="<%= coursename %>"/>
+        <label for="pagetitle">Title</label>
+        <input type="text" name="pagetitle"/>
+        <div>
+        <p>Chapter: </p>
+        <select name="Chapters" id="chapters">
+            <% for(var i=0;i< chapters.length;i++) { %>
+            <option value="<%= chapters[i].chapter %>"><%= chapters[i].chapter %></option>
+            <% } %>
+          </select>
+        </div>
+        <p>Content</p>
+        <textarea name="content"></textarea>
+        <br>
+        <button type="submit">create</button>
+    </form>
+</body>
+</html>

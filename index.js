@@ -1,3 +1,5 @@
-console.log("capstone")
-console.log("level 201")
-console.log("initial review")
+const app = require("./app");
+app.listen(3000, () => {
+  console.log("Started express server at port 3000");
+});
+

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Create a Chapter</h1>
+    <form action="/chapters" method="post">
+        <input name = "coursename" type="=hidden" value="<%= coursename %>" />
+        <label for ="chaptername">What is the name of Chapter?</label>
+        <input type="text" name = "chaptername"/>
+        <label for = "description">description</label>
+        <input type="text" name="description">
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>
