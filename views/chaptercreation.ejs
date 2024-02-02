@@ -6,9 +6,15 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="/">Home</a>>
+    <form action="/course" method="post">
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <a ><button type="submit"><%= coursename %></button></a>
+    </form>>
+    <p>Create a chapter</p>
     <h1>Create a Chapter</h1>
     <form action="/chapters" method="post">
-        <input name = "coursename" type="=hidden" value="<%= coursename %>" />
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
         <label for ="chaptername">What is the name of Chapter?</label>
         <input type="text" name = "chaptername"/>
         <label for = "description">description</label>

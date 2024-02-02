@@ -6,6 +6,8 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="/">Home</a>>
+    <p><%= coursename %></p>
     <div>
         <h1><%= coursename %></h1>
         <hr/>
@@ -13,7 +15,7 @@
         <!-- list of chpaters -->
         <form action="/chaptercreation" method="post">
             <input type="hidden" type="text" name="coursename" value="<%= coursename %>"/>
-            <button type="submit">Create a new Chpater</button>
+            <button type="submit">Create a new Chapter</button>
         </form>
 
     </div>

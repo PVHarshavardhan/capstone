@@ -6,14 +6,21 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="/">Home</a>>
+    <form action="/course" method="post">
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <a ><button type="submit"><%= coursename %></button></a>
+    </form>>
+    <P>New page</P>
+
     <h1>New Page</h1>
     <form action="/showpage" method="post">
         <input type="hidden" name="coursename" value="<%= coursename %>"/>
-        <label for="pagetitle">Title</label>
+        <label for="pagename">Title</label>
         <input type="text" name="pagetitle"/>
         <div>
         <p>Chapter: </p>
-        <select name="Chapters" id="chapters">
+        <select name="chaptername" id="chapter">
             <% for(var i=0;i< chapters.length;i++) { %>
             <option value="<%= chapters[i].chapter %>"><%= chapters[i].chapter %></option>
             <% } %>

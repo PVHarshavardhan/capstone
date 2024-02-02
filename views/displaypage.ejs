@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/">Home</a>>
+    <form action="/course" method="post">
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <a ><button type="submit"><%= coursename %></button></a>
+    </form>>
+    <form action="/page" method="post">
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <input name = "chaptername" type="hidden" value="<%= chaptername %>" />
+        <a ><button type="submit"><%= chaptername %></button></a>
+    </form>>
+    <P><%= pagename %></P>
+
+
+
+
+    <form action="/page" method="post">
+        <input type="hidden" value="<%= coursename %>" name="coursename" />
+        <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
+        <h1><%= pagename %></h1>
+        <p><%= content %></p>
+        <button>Create new Page</button>
+        </form>
+</body>
+</html>

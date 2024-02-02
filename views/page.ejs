@@ -6,12 +6,29 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="/">Home</a>>
+    <form action="/course" method="post">
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <a ><button type="submit"><%= coursename %></button></a>
+    </form>>
+    <p><%= chaptername %></p>
+
     <h1><%= chaptername %></h1>
         <hr/>
-        <h3>Chapters</h3>
-        <!-- list of chpaters -->
+        <h3>Pages</h3>
+        <!-- <% if(pageslist.length==0){ %>
+        <P>No pages added to this chapter</P> 
+        <% } else { %>
+        <ul>
+            <% for(let i=0; i<pageslist.length;i++) { %>
+                <li><%= pageslist[i].pagename %> </li>
+            <% } % >
+        </ul>
+
+    <% } %>  -->
+        <!-- list of pages -->
         <form action="/pagecreation" method="post">
-            <input type="hidden" type="text" name="coursename" value="<%= coursename %>"/>
+            <input type="hidden" name="coursename" value="<%= coursename %>"/>
             <button type="submit">Create a new Page</button>
         </form>
 </body>
