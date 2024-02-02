@@ -4,22 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="./css/style.css" rel="stylesheet">
 </head>
 <body>
-    <a href="/">Home</a>>
+    <div class="tags">
+    <a href="/" class="tag">Home</a><p>></p>
     <form action="/course" method="post">
-        <input name = "coursename" type="hidden" value="<%= coursename %>" />
-        <a ><button type="submit"><%= coursename %></button></a>
-    </form>>
-    <p>Create a chapter</p>
+        <input  name = "coursename" type="hidden" value="<%= coursename %>" />
+        <a ><button class="tag" type="submit"><%= coursename %></button></a>
+    </form><p>></p>
+    <p class="tag">Create a chapter</p>
+    </div>
+
+
+    <div class="back">
     <h1>Create a Chapter</h1>
     <form action="/chapters" method="post">
-        <input name = "coursename" type="hidden" value="<%= coursename %>" />
-        <label for ="chaptername">What is the name of Chapter?</label>
-        <input type="text" name = "chaptername"/>
-        <label for = "description">description</label>
-        <input type="text" name="description">
+        <input class="input" name = "coursename" type="hidden" value="<%= coursename %>" />
+        <label class="label" for ="chaptername">What is the name of Chapter?</label><br>
+        <input  class="input" type="text" name = "chaptername"/><br>
+
+        <label for = "description">Description:</label><br>
+        <input  class="input " type="text" name="description"><br>
         <button type="submit">Create</button>
     </form>
+</div>
 </body>
 </html>

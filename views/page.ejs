@@ -3,33 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/style.css" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <a href="/">Home</a>>
+    <div class="tags">
+    <a href="/" class="tag">Home</a><p>></p>
     <form action="/course" method="post">
         <input name = "coursename" type="hidden" value="<%= coursename %>" />
-        <a ><button type="submit"><%= coursename %></button></a>
-    </form>>
-    <p><%= chaptername %></p>
+        <a ><button class="tag" type="submit"><%= coursename %></button></a>
+    </form><p>></p>
+    <p class ="tag"><%= chaptername %></p>
+    </div>
 
-    <h1><%= chaptername %></h1>
+
+    <div class="back">
+
+        <h1 class="heading"><%= chaptername %></h1>
         <hr/>
         <h3>Pages</h3>
-        <!-- <% if(pageslist.length==0){ %>
-        <P>No pages added to this chapter</P> 
-        <% } else { %>
-        <ul>
-            <% for(let i=0; i<pageslist.length;i++) { %>
-                <li><%= pageslist[i].pagename %> </li>
-            <% } % >
-        </ul>
-
-    <% } %>  -->
-        <!-- list of pages -->
+        <% if(pageslist.length==0) { %>
+            <p>No pages added to this Chapter</p>
+            <% } else { %>
+            <ul>
+                <% for (let i=0;i<pageslist.length;i++) { %>
+                    <li><%= pageslist[i].pagename %></li>
+                <% } %>
+            </ul>
+            <% } %>
         <form action="/pagecreation" method="post">
             <input type="hidden" name="coursename" value="<%= coursename %>"/>
             <button type="submit">Create a new Page</button>
         </form>
+    </div>
 </body>
 </html>

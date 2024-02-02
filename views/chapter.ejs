@@ -3,19 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/style.css" rel="stylesheet">
     <title>Document</title>
 </head>
-<body>
-    <a href="/">Home</a>>
-    <p><%= coursename %></p>
-    <div>
-        <h1><%= coursename %></h1>
+<body><div class="tags">
+    <a href="/" class="tag">Home</a>
+    <p>></p>
+    <p class="tag"><%= coursename %></p>
+    </div>
+    <div class="back">
+        <h1 class="heading"><%= coursename %></h1>
         <hr/>
-        <h3>Chapters</h3>
+        <h3 >Chapters</h3>
         <!-- list of chpaters -->
+
+        <p class="list">Chapters</p>
+        <% if (chapters.length==0) { %>
+            <p class="list">No chapters yet created </p>
+        <% } else { %>
+            <ul>
+            <% for(let i=0;i< chapters.length; i++) { %>
+                <li class="list"><%= chapters[i].chapter %></li>
+            <% } %>    
+            </ul>
+        <% } %>
         <form action="/chaptercreation" method="post">
-            <input type="hidden" type="text" name="coursename" value="<%= coursename %>"/>
-            <button type="submit">Create a new Chapter</button>
+            <input class ="input" type="hidden" type="text" name="coursename" value="<%= coursename %>"/>
+            <button  type="submit">Create a new Chapter</button>
         </form>
 
     </div>

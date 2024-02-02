@@ -3,33 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/style.css" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <a href="/">Home</a>>
+    <div class="tags">
+    <a href="/" class="tag">Home</a>
+    <P >></P>
     <form action="/course" method="post">
         <input name = "coursename" type="hidden" value="<%= coursename %>" />
-        <a ><button type="submit"><%= coursename %></button></a>
-    </form>>
-    <P>New page</P>
+        <button class="tagbutton tag" type="submit"><%= coursename %></button>
+        
+    </form>
+    <p >></p>
+    <p class = "tag">New page</p>
+    </div>
 
-    <h1>New Page</h1>
+    <div class="back">
+    <h1 class="heading">New Page</h1>
     <form action="/showpage" method="post">
-        <input type="hidden" name="coursename" value="<%= coursename %>"/>
-        <label for="pagename">Title</label>
-        <input type="text" name="pagetitle"/>
+        <input class="input" type="hidden" name="coursename" value="<%= coursename %>"/>
+        <label for="pagename">Title:</label><br>
+        <input class="input" type="text" name="pagename"/>
         <div>
-        <p>Chapter: </p>
+        <label>Chapter: </label><br>
         <select name="chaptername" id="chapter">
             <% for(var i=0;i< chapters.length;i++) { %>
             <option value="<%= chapters[i].chapter %>"><%= chapters[i].chapter %></option>
             <% } %>
           </select>
         </div>
-        <p>Content</p>
-        <textarea name="content"></textarea>
+        <label>Content:</label><br>
+        <textarea class="content" content"></textarea>
         <br>
-        <button type="submit">create</button>
+        <button class ="button" type="submit">create</button>
     </form>
+</div>
 </body>
 </html>
