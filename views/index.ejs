@@ -3,9 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
+    <script src="https://kit.fontawesome.com/4a2054232e.js" crossorigin="anonymous"></script>
     <title>Document</title>
+    <script>
+        var token = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content")
+        function enroll(button){
+            
+            var coursename = button.getAttribute("data-coursename");
+            alert("Enrolling to course" + coursename);
+            var data = { coursename: coursename,
+                    "_csrf": token
+                }
+            
+            fetch('/enroll', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then((res) =>{
+                if(res.ok){
+                window.location.reload();
+                }
+                else {
+                    alert("Aleady registered");
+                    window.location.reload();
+                }
+            })
+            .catch((err) => console.error(err));
+        }
+    </script>
 </head>
 <body>
+    <a href="/signout">Signout</a>
     <%-include('create.ejs') %>
+    <%-include('listcourses.ejs') %>
+
+
 </body>
 </html>

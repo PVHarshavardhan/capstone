@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
     <link href="./css/style.css" rel="stylesheet">
     <title>Document</title>
 </head>
@@ -17,6 +18,7 @@
         <h1>Create a new  Course</h1>
         
         <form action="/course" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <label class = "label">What is the name of the course?</label><br><br>
             <input  class=" input" name ="coursename" type="text" placeholder="Enter course name"/>
             <br>

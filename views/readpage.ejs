@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
+    <link href="./css/style.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="tags">
+    <a href="/" class="tag">Home</a><p>></p>
+    <form action="/course" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <button class="tag" type="submit"><%= coursename %></button>
+    </form><p>></p>
+    <p class ="tag"><%= chapter %></p>
+    </div>
+
+
+    <div class="back">
+
+        <h1 class="heading"><%= chapter %></h1>
+        <p><%= description %></p>
+        <hr/>
+        <h3>Pages</h3>
+        <% if(pageslist.length==0) { %>
+            <p>No pages added to this Chapter</p>
+            <% } else { %>
+            <ul>
+                <% for (let i=0;i<pageslist.length;i++) { %>
+                    <form action="/learnpage" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+                        <input name = "chaptername" type="hidden" value="<%= chapter %>" />
+                        <input name = "pagename" type="hidden" value ="<%= pageslist[i].pagename %>"/>
+                            <div style="display: flex; flex-direction:row;">
+                            <div style="width: 300px;">
+                               <button class="signup-button" type="submit" ><%= pageslist[i].pagename %></button>
+                            </div>
+                            </div>
+                    </form>
+                <% } %>
+            </ul>
+            <% } %>
+    </div>
+</body>
+</html>

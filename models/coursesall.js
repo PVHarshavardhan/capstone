@@ -15,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     static getChapters(coursename) {
       return this.findAll({where :{ coursename}})
     }
+
+    static getCourses() {
+      return this.findAll();
+    }
+
+    static getDescription(coursename,chaptername) {
+      return this.findOne({where:{coursename:coursename,chapter:chaptername}})
+    }
   }
   Coursesall.init({
     coursename: DataTypes.STRING,

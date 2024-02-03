@@ -22,19 +22,18 @@
         <input name = "chaptername" type="hidden" value="<%= chaptername %>" />
         <a class="tag"><button type="submit"><%= chaptername %></button></a>
     </form><p>></p>
-    <P><%= pagename %></P>
+    <P class="tag"><%= pagename %></P>
     </div>
 
 
 
     <div class="back">
-    <form action="/page" method="post">
+    <form action="/learnpage" method="post">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="hidden" value="<%= coursename %>" name="coursename" />
         <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
         <h1 class="heading"><%= pagename %></h1>
-        <p class="para"><%= content %></p>
-        <button class="en-button">Create new Page</button>
+        <p class="para"><%= pagecontent %></p>   
         </form>
     </div>
 </body>

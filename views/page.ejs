@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
     <link href="./css/style.css" rel="stylesheet">
     <title>Document</title>
 </head>
@@ -10,6 +11,7 @@
     <div class="tags">
     <a href="/" class="tag">Home</a><p>></p>
     <form action="/course" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input name = "coursename" type="hidden" value="<%= coursename %>" />
         <a ><button class="tag" type="submit"><%= coursename %></button></a>
     </form><p>></p>
@@ -32,6 +34,7 @@
             </ul>
             <% } %>
         <form action="/pagecreation" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="coursename" value="<%= coursename %>"/>
             <button type="submit">Create a new Page</button>
         </form>

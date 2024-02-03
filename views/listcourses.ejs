@@ -1,0 +1,32 @@
+
+<center><h1>Enrolled Courses</h1></center><hr>
+
+
+
+<center><h1>Available Courses</h1></center><hr>
+    
+    
+    <div class="parent">
+
+        <% for (let i=0;i<courselist.length;i++) { %>
+        <form action ="/viewcourse" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input name = "coursename" type="hidden" value="<%= courselist[i].coursename %>" />
+        
+        <div class="frame1" >
+            <div class="contentbox">
+            <H3 class="head"><%= courselist[i].coursename %></H3>
+            <p class="pa"> Author:<%= courselist[i].author %> </p>
+            <p class="pa"><i class="fa-solid fa-user-graduate"></i></P>
+            <div class="butt">
+            <input type="submit"class="en-button"  value="View Course"/>
+            <input class="en-button" type="button" onclick="enroll(this)" data-coursename="<%= courselist[i].coursename %>" value="Enroll"/>
+            </div>
+            </div>
+        </div>
+        </form>
+        
+        <% } %>
+
+      
+    </div>

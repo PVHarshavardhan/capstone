@@ -3,8 +3,9 @@ const app = express();
 const csrf =require("tiny-csrf")
 const cookieParser= require("cookie-parser")
 const path = require("path");
-const { Coursesall, Pages, User } = require('./models')
+const { Coursesall, Pages, User,Enroll } = require('./models')
 const bodyParser = require('body-parser')
+const { error } = require('console');
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -81,15 +82,16 @@ passport.deserializeUser((id, done) => {
   });
 
 app.get('/',(request, response) => {
-    response.render('start');
+    response.render('start',{csrfToken: request.csrfToken()});
 })
 
-app.get('/home', (request, response) => {
-    response.render('index')
+app.get('/home', async (request, response) => {
+    const courseList = await Coursesall.getCourses();
+    response.render('index',{courselist:courseList,csrfToken: request.csrfToken()})
 })
 
 app.get('/coursecreation', (request, response) => {
-    response.render('coursecreation')
+    response.render('coursecreation',{csrfToken: request.csrfToken()})
 })
 
 app.post('/course', connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
@@ -98,7 +100,7 @@ app.post('/course', connectEnsureLogin.ensureLoggedIn(), async (request, respons
 
         const chapters = await Coursesall.getChapters(courseName);
         
-        response.render('chapter',{coursename:courseName,chapters} );
+        response.render('chapter',{coursename:courseName,chapters,csrfToken: request.csrfToken()} );
     }
     catch(error){
         console.log(error);
@@ -108,7 +110,7 @@ app.post('/course', connectEnsureLogin.ensureLoggedIn(), async (request, respons
 
 app.post('/chaptercreation',connectEnsureLogin.ensureLoggedIn(), (request,response) => {
     const courseName = request.body.coursename;
-    response.render('chaptercreation', {coursename:courseName})
+    response.render('chaptercreation', {coursename:courseName,csrfToken: request.csrfToken()})
 })
 
 app.post("/chapters", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
@@ -120,7 +122,7 @@ app.post("/chapters", connectEnsureLogin.ensureLoggedIn(), async (request, respo
     try{
         const course = await Coursesall.create({
             coursename:courseName,
-            author:"pp",
+            author:request.user.firstName,
             chapter:chapterName,
             chapterdescription:des
         })
@@ -133,7 +135,7 @@ app.post("/chapters", connectEnsureLogin.ensureLoggedIn(), async (request, respo
     
     const pagesList =await Pages.getPages(courseName,chapterName); 
     console.log(pagesList)
-    response.render("page",{coursename:courseName,chaptername:chapterName,pageslist: pagesList})
+    response.render("page",{coursename:courseName,chaptername:chapterName,pageslist: pagesList,csrfToken: request.csrfToken()})
 })
 
 app.post("/page",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
@@ -141,12 +143,12 @@ app.post("/page",connectEnsureLogin.ensureLoggedIn(), async (request, response) 
     const chapterName=request.body.chaptername;
     const pagesList = await Pages.getPages(courseName,chapterName); 
     console.log(pagesList)
-    response.render("page",{coursename:courseName,chaptername:chapterName,pageslist:pagesList})
+    response.render("page",{coursename:courseName,chaptername:chapterName,pageslist:pagesList,csrfToken: request.csrfToken()})
 })
 app.post("/pagecreation",connectEnsureLogin.ensureLoggedIn(), async (request,response) => {
     const courseName = request.body.coursename;
     const chapters = await Coursesall.getChapters(courseName);
-    response.render('pagecreation', {coursename:courseName,chapters})
+    response.render('pagecreation', {coursename:courseName,chapters:chapters, csrfToken: request.csrfToken()})
     
 })
 
@@ -159,13 +161,14 @@ app.post("/showpage",connectEnsureLogin.ensureLoggedIn(), async (request, respon
             coursename:request.body.coursename,
             chaptername:request.body.chaptername
         })
+        console.log(page)
     } catch(error){
         console.log(error)
     }
     response.render("displaypage",{ pagename:request.body.pagename,
         content:request.body.content,
         coursename:request.body.coursename,
-        chaptername:request.body.chaptername })
+        chaptername:request.body.chaptername, csrfToken: request.csrfToken()})
 
 })
 
@@ -227,4 +230,81 @@ app.get("/signout", (request, response, next) => {
   });
   
 
+
+  app.get("/listcourses",(request, response) => {
+    response.render("listcourses");
+  })
+
+  app.post("/enroll", async (request, response) => {
+    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename);
+    if (enrollstatus.length > 0 ){
+      console.log("already registered")
+      return response.status(422).json(error);
+    }
+    else {
+
+    try {
+      const enroll = await Enroll.create({
+        userid:request.user.id,
+        coursename:request.body.coursename,
+        enroll:"registered"
+      })
+      console.log(enroll);
+      return response.json(enroll)
+    } catch (error) {
+      console.log(error)
+      response.redirect("index",{csrfToken: request.csrfToken()})
+    }
+  }
+  })
+
+  app.post("/viewcourse", async (request, response) => {
+    const chapters = await Coursesall.getChapters(request.body.coursename);
+    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename);
+    response.render("viewcourses",{ coursename: request.body.coursename, chapters:chapters ,enrolled:enrollstatus, csrfToken: request.csrfToken()})
+
+    
+  })
+
+  app.post("/enrollinginview", async (request, response)=> {
+    const chapters = await Coursesall.getChapters(request.body.coursename);
+    const enroll = await Enroll.create({
+      userid:request.user.id,
+      coursename:request.body.coursename,
+      enroll:"registered"
+    })
+    console.log(enroll)
+    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename);
+    response.render("viewcourses",{ coursename: request.body.coursename, chapters:chapters ,enrolled:enrollstatus, csrfToken: request.csrfToken()})
+
+  })
+
+  app.post("/readpages", async (request, response) => {
+    const courseName=request.body.coursename;
+    const chapterName=request.body.chaptername;
+    const pagesList =await Pages.getPages(courseName,chapterName); 
+    const description = await Coursesall.getDescription(courseName,chapterName);
+    response.render("readpage",{coursename:courseName,chapter:chapterName, pageslist:pagesList,description:description.chapterdescription,csrfToken: request.csrfToken()})
+  })
+
+
+  app.post("/learnpage", async (request, response) => {
+    const courseName=request.body.coursename;
+    const chapterName=request.body.chaptername;
+    const pagesList =await Pages.getPages(courseName,chapterName);
+    const pagecontent = await Pages.getContent(request.body.pagename,courseName,chapterName);
+    for(let i=0; i<pagesList.length;i++) {
+      if(pagesList[i].pagename==request.body.pagename){
+      if(i!=pagesList.length-1) {
+        response.render("learnpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,pagecontent:pagecontent.content,nextpage:pagesList[i+1].pagename,csrfToken: request.csrfToken()})
+        break;
+      }
+      else {
+        response.render("endpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,pagecontent:pagecontent.content,csrfToken: request.csrfToken()})
+      }
+    }
+  }
+    
+    
+  })
 module.exports = app;

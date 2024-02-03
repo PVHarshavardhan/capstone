@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
+    <link href="./css/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4a2054232e.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body><div class="tags">
+    <a href="/home" class="tag">Home</a>
+    <p>></p>
+    <p class="tag"><%= coursename %></p>
+    </div>
+    <!-- Enroll box -->
+    <% if (enrolled.length == 0) { %>
+
+
+    
+        <form action ="/enrollinginview" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input name = "coursename" type="hidden" value="<%= coursename %>" />
+            
+            <div class="frame1" >
+                <div class="contentbox">
+                <H3 class="head"><%= coursename %></H3>
+                <p class="pa"> Author:<%= chapters[0].author %> </p>
+                <p class="pa"><i class="fa-solid fa-user-graduate"></i></P>
+                <div class="butt">
+                <input class="en-button" type="submit"  value="Enroll"/>
+                </div>
+                </div>
+            </div>
+            </form>
+            
+
+
+    <div class="back">
+        <h1 class="heading"><%= coursename %></h1>
+        <hr/>
+        <h3 >Chapters</h3>
+        <!-- list of chpaters -->
+
+        <% if (chapters.length==0) { %>
+            <p class="list">No chapters yet created </p>
+        <% } else { %>
+            
+            <% for(let i=0;i< chapters.length; i++) { %>
+                <div style="display: flex; flex-direction:row;">
+                    <div style="width: 200px;">
+                        <p class ="signup-button"><%= chapters[i].chapter %></p>
+                    </div>
+                <p><i class="fa-solid fa-lock"></i></p>
+                </div>
+            <% } %>    
+            
+        <% } 
+            } else {%>
+
+                <h3 >Chapters</h3>
+                <!-- list of chpaters -->
+        
+                <% if (chapters.length==0) { %>
+                    <p class="list">No chapters yet created </p>
+                <% } else { %>
+                    
+                    <% for(let i=0;i< chapters.length; i++) { %>
+                        <form action="/readpages" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <input name = "coursename" type="hidden" value="<%= chapters[i].coursename %>" />
+                            <input name = "chaptername" type="hidden" value="<%= chapters[i].chapter %>" />
+                            <div style="display: flex; flex-direction:row;">
+                            <div style="width: 300px;">
+                               <button class="signup-button" type="submit" ><%= chapters[i].chapter %></button>
+                            </div>
+                            </div>
+                        </form>
+                    <% } 
+                 }
+                 } %>  
+
+    </div>
+</body>
+</html>
