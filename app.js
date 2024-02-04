@@ -56,7 +56,7 @@ passport.use(
           if (result) {
             return done(null, user);
           } else {
-            return done("Invalid password");
+            return done(null,false,{message:"Invalid Password"})
           }
         })
         .catch((err) => {
@@ -211,6 +211,7 @@ app.post("/users", async (request, response) => {
     
 } catch (error) {
     console.log(error);
+
 }
 })
 
@@ -223,7 +224,7 @@ app.get("/login",(request, response) => {
 app.post(
     "/session",
     passport.authenticate("local", {
-      failureRedirect: "/login",
+      failureRedirect:"/login",
       failureFlash: true,
     }),
     (request, response) => {
@@ -324,7 +325,37 @@ app.get("/signout", (request, response, next) => {
       }
     }
   }
+  })
+  app.get("/passwordform", (request,response) => {
+    response.render("changepassword",{csrfToken: request.csrfToken()})
+  })
+
+  app.post("/changepassword", async (request,response) => {
+    const checkstatus =await bcrypt.compare(request.body.currentpassword,request.user.password);
+    if (checkstatus) {
+      if(request.body.newpassword==request.body.confirmpassword){
+        const hashedPwd =await bcrypt.hash(request.body.newpassword,saltRounds);
+        const res = await Members.update({password:hashedPwd},{where:{id:request.user.id}});
+        console.log(res)
+      }
+      const courseList = await Coursesall.getCourses();
+
+    const enrollednumber = await Enroll.getEnrollNumber();
+    const numbercount={}
+    for (let i=0;i<enrollednumber.length;i++) {
+      numbercount[enrollednumber[i].dataValues.coursename+enrollednumber[i].dataValues.author]=enrollednumber[i].dataValues.studentcount
+    }
     
+    console.log(numbercount)
+
+    const enrolled = await Enroll.getEnrolled(request.user.id);
+    response.render('index',{courselist:courseList,numbercount:numbercount,enrolled:enrolled,username:request.user.firstName,role:request.user.role,csrfToken: request.csrfToken()})
+    }
+    else{
+      console.log("incorrect details");
+      response.redirect("/changepassword")
+    }
+
     
   })
 module.exports = app;
