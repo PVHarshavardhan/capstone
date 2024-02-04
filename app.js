@@ -3,7 +3,7 @@ const app = express();
 const csrf =require("tiny-csrf")
 const cookieParser= require("cookie-parser")
 const path = require("path");
-const { Coursesall, Pages, User,Enroll } = require('./models')
+const { Coursesall, Pages, Members,Enroll } = require('./models')
 const bodyParser = require('body-parser')
 const { error } = require('console');
 app.use(express.static(path.join(__dirname, "public")));
@@ -72,7 +72,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    User.findByPk(id)
+      Members.findByPk(id)
       .then((user) => {
         done(null, user);
       })
@@ -195,7 +195,7 @@ app.post("/users", async (request, response) => {
 
     const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
     try {
-    const user = await User.create({
+    const user = await Members.create({
         firstName:request.body.firstName,
         lastName:request.body.lastName,
         role:request.body.role,
