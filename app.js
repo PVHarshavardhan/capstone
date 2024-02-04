@@ -44,7 +44,7 @@ passport.use(
       passwordField: "password",
     },
     (username, password, done) => {
-      User.findOne({
+      Member.findOne({
         where: {
           email: username,
         },
