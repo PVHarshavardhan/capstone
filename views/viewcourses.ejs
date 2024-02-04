@@ -11,7 +11,7 @@
 <body><div class="tags">
     <a href="/home" class="tag">Home</a>
     <p>></p>
-    <p class="tag"><%= coursename %></p>
+    <p ><%= coursename %></p>
     </div>
     <!-- Enroll box -->
     <% if (enrolled.length == 0) { %>
@@ -21,11 +21,12 @@
         <form action ="/enrollinginview" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input name = "coursename" type="hidden" value="<%= coursename %>" />
+            <input name = "author" type="hidden" value="<%= author %>" />
             
             <div class="frame1" >
                 <div class="contentbox">
                 <H3 class="head"><%= coursename %></H3>
-                <p class="pa"> Author:<%= chapters[0].author %> </p>
+                <p class="pa"> Author:<%= author %> </p>
                 <p class="pa"><i class="fa-solid fa-user-graduate"></i></P>
                 <div class="butt">
                 <input class="en-button" type="submit"  value="Enroll"/>
@@ -49,7 +50,7 @@
             <% for(let i=0;i< chapters.length; i++) { %>
                 <div style="display: flex; flex-direction:row;">
                     <div style="width: 200px;">
-                        <p class ="signup-button"><%= chapters[i].chapter %></p>
+                        <p class ="signup-button" style="border: black;"><%= chapters[i].chapter %></p>
                     </div>
                 <p><i class="fa-solid fa-lock"></i></p>
                 </div>
@@ -70,6 +71,7 @@
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <input name = "coursename" type="hidden" value="<%= chapters[i].coursename %>" />
                             <input name = "chaptername" type="hidden" value="<%= chapters[i].chapter %>" />
+                            <input name = "author" type="hidden" value="<%= chapters[i].author %>" />
                             <div style="display: flex; flex-direction:row;">
                             <div style="width: 300px;">
                                <button class="signup-button" type="submit" ><%= chapters[i].chapter %></button>

@@ -4,7 +4,9 @@
     padding:0;
 
 
+
 }
+
 .tag {
     border:none;
     font-size: 20px;
@@ -90,6 +92,8 @@ textarea {
 }
 .para {
     font-size: 20px;
+    width:500px;
+    height: 300px;
 }
 
 .button{
@@ -139,7 +143,6 @@ h3 {
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-    border: 2px solid black;
     border-radius: 5px;
     color: black;
     background-color: white;
@@ -164,7 +167,8 @@ h3 {
     margin-right: 100px;
     margin-top: 50px;
     margin-bottom:70px;
-    background-color: #e0dea3;
+    background-color: #f2f1d8;
+    border-radius: 4px;
     
 }
 .contentbox {
@@ -183,17 +187,16 @@ h3 {
     margin-top: 15px;
     margin-left:15px;
     margin-right: 15px;
-    background-color: rgb(115, 143, 114);
-    color:white;
-    height:45px;
+    background-color: rgba(155, 233, 87, 0.86);
+    height:40px;
     bottom: 25px; 
-    /* right:30px;
-    left:30px; */
     width:170px;
     border-radius: 4px;
     font-size: medium;
     font-weight: bold;
     box-shadow: 3px;
+    color: black;
+    border:none;
 
 }
 .head {
@@ -204,3 +207,10 @@ h3 {
     margin:20px;
 }
 
+.signout {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: end;
+    width:1200px;
+}

@@ -87,7 +87,17 @@ app.get('/',(request, response) => {
 
 app.get('/home', async (request, response) => {
     const courseList = await Coursesall.getCourses();
-    response.render('index',{courselist:courseList,csrfToken: request.csrfToken()})
+
+    const enrollednumber = await Enroll.getEnrollNumber();
+    const numbercount={}
+    for (let i=0;i<enrollednumber.length;i++) {
+      numbercount[enrollednumber[i].dataValues.coursename+enrollednumber[i].dataValues.author]=enrollednumber[i].dataValues.studentcount
+    }
+    
+    console.log(numbercount)
+
+    const enrolled = await Enroll.getEnrolled(request.user.id);
+    response.render('index',{courselist:courseList,numbercount:numbercount,enrolled:enrolled,username:request.user.firstName,role:request.user.role,csrfToken: request.csrfToken()})
 })
 
 app.get('/coursecreation', (request, response) => {
@@ -98,7 +108,7 @@ app.post('/course', connectEnsureLogin.ensureLoggedIn(), async (request, respons
     const courseName = request.body.coursename;
     try {
 
-        const chapters = await Coursesall.getChapters(courseName);
+        const chapters = await Coursesall.getChapters(courseName,request.user.firstName);
         
         response.render('chapter',{coursename:courseName,chapters,csrfToken: request.csrfToken()} );
     }
@@ -147,7 +157,9 @@ app.post("/page",connectEnsureLogin.ensureLoggedIn(), async (request, response) 
 })
 app.post("/pagecreation",connectEnsureLogin.ensureLoggedIn(), async (request,response) => {
     const courseName = request.body.coursename;
-    const chapters = await Coursesall.getChapters(courseName);
+    const chapters = await Coursesall.getChapters(courseName,request.user.firstName);
+    console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+    console.log(chapters);
     response.render('pagecreation', {coursename:courseName,chapters:chapters, csrfToken: request.csrfToken()})
     
 })
@@ -236,7 +248,7 @@ app.get("/signout", (request, response, next) => {
   })
 
   app.post("/enroll", async (request, response) => {
-    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename);
+    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename,request.body.author);
     if (enrollstatus.length > 0 ){
       console.log("already registered")
       return response.status(422).json(error);
@@ -247,7 +259,8 @@ app.get("/signout", (request, response, next) => {
       const enroll = await Enroll.create({
         userid:request.user.id,
         coursename:request.body.coursename,
-        enroll:"registered"
+        enroll:"registered",
+        author:request.body.author
       })
       console.log(enroll);
       return response.json(enroll)
@@ -259,32 +272,39 @@ app.get("/signout", (request, response, next) => {
   })
 
   app.post("/viewcourse", async (request, response) => {
-    const chapters = await Coursesall.getChapters(request.body.coursename);
-    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename);
-    response.render("viewcourses",{ coursename: request.body.coursename, chapters:chapters ,enrolled:enrollstatus, csrfToken: request.csrfToken()})
+    
+    const chapters = await Coursesall.getChapters(request.body.coursename,request.body.author);
+    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename,request.body.author);
+
+    response.render("viewcourses",{ coursename: request.body.coursename, chapters:chapters,author:request.body.author,enrolled:enrollstatus, csrfToken: request.csrfToken()})
 
     
   })
 
   app.post("/enrollinginview", async (request, response)=> {
-    const chapters = await Coursesall.getChapters(request.body.coursename);
+    
+    console.log(request.body.author);
+    const chapters = await Coursesall.getChapters(request.body.coursename,request.body.author);
     const enroll = await Enroll.create({
       userid:request.user.id,
       coursename:request.body.coursename,
-      enroll:"registered"
+      enroll:"registered",
+      author:request.body.author
     })
     console.log(enroll)
-    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename);
-    response.render("viewcourses",{ coursename: request.body.coursename, chapters:chapters ,enrolled:enrollstatus, csrfToken: request.csrfToken()})
+    const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename,request.body.author);
+    response.render("viewcourses",{ coursename: request.body.coursename,chapters:chapters,author:request.body.author,enrolled:enrollstatus, csrfToken: request.csrfToken()})
 
   })
 
   app.post("/readpages", async (request, response) => {
+    
+    console.log(request.body.author);
     const courseName=request.body.coursename;
     const chapterName=request.body.chaptername;
     const pagesList =await Pages.getPages(courseName,chapterName); 
     const description = await Coursesall.getDescription(courseName,chapterName);
-    response.render("readpage",{coursename:courseName,chapter:chapterName, pageslist:pagesList,description:description.chapterdescription,csrfToken: request.csrfToken()})
+    response.render("readpage",{coursename:courseName,chapter:chapterName, pageslist:pagesList,author:request.body.author,description:description.chapterdescription,csrfToken: request.csrfToken()})
   })
 
 
@@ -296,11 +316,11 @@ app.get("/signout", (request, response, next) => {
     for(let i=0; i<pagesList.length;i++) {
       if(pagesList[i].pagename==request.body.pagename){
       if(i!=pagesList.length-1) {
-        response.render("learnpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,pagecontent:pagecontent.content,nextpage:pagesList[i+1].pagename,csrfToken: request.csrfToken()})
+        response.render("learnpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,author:request.body.author,pagecontent:pagecontent.content,nextpage:pagesList[i+1].pagename,csrfToken: request.csrfToken()})
         break;
       }
       else {
-        response.render("endpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,pagecontent:pagecontent.content,csrfToken: request.csrfToken()})
+        response.render("endpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,author:request.body.author,pagecontent:pagecontent.content,csrfToken: request.csrfToken()})
       }
     }
   }

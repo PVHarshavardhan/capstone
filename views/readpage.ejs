@@ -9,13 +9,14 @@
 </head>
 <body>
     <div class="tags">
-    <a href="/" class="tag">Home</a><p>></p>
-    <form action="/course" method="post">
+    <a href="/home" class="tag">Home</a><p>></p>
+    <form action="/viewcourse" method="post">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <input name = "author" type="hidden" value="<%= author %>" />
         <button class="tag" type="submit"><%= coursename %></button>
     </form><p>></p>
-    <p class ="tag"><%= chapter %></p>
+    <p ><%= chapter %></p>
     </div>
 
 
@@ -34,6 +35,7 @@
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input name = "coursename" type="hidden" value="<%= coursename %>" />
                         <input name = "chaptername" type="hidden" value="<%= chapter %>" />
+                        <input name = "author" type="hidden" value = "<%= author %>" />
                         <input name = "pagename" type="hidden" value ="<%= pageslist[i].pagename %>"/>
                             <div style="display: flex; flex-direction:row;">
                             <div style="width: 300px;">

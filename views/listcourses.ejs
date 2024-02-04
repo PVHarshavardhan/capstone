@@ -1,9 +1,42 @@
 
-<center><h1>Enrolled Courses</h1></center><hr>
+<h2 style="padding-left: 50px;">Enrolled Courses</h2>
+
+<div class="parent">
+
+    <% for (let i=0;i<enrolled.length;i++) { %>
+    <form action ="/viewcourse" method="post">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <input type = "hidden" name="author" value="<%= enrolled[i].author %>" />
+    <input name = "coursename" type="hidden" value="<%= enrolled[i].coursename %>" />
+    
+    <div class="frame1" >
+        <div class="contentbox">
+        <H3 class="head"><%= enrolled[i].coursename %></H3>
+        <p class="pa"> Author:<%= enrolled[i].author%> </p>
+        <div style="display: flex; flex-direction:row; height:50px;">
+                
+            <p class="pa"><i class="fa-solid fa-user-graduate"></i> </P>
+            <p><%= numbercount[enrolled[i].coursename+enrolled[i].author] %></p>
+
+        </div>
+
+        
+        <div class="butt">
+        <input type="submit" class="en-button"  value="Continue"/>
+        <input class="en-button" type="button"  value="completed"/>
+        </div>
+        </div>
+    </div>
+    </form>
+    
+    <% } %>
+
+  
+</div>
+<hr>
 
 
-
-<center><h1>Available Courses</h1></center><hr>
+<h2 style="padding-left: 50px;">Available Courses</h2>
     
     
     <div class="parent">
@@ -11,16 +44,22 @@
         <% for (let i=0;i<courselist.length;i++) { %>
         <form action ="/viewcourse" method="post">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input type="hidden" name="author" value="<%= courselist[i].author %>"/>
         <input name = "coursename" type="hidden" value="<%= courselist[i].coursename %>" />
         
         <div class="frame1" >
             <div class="contentbox">
             <H3 class="head"><%= courselist[i].coursename %></H3>
             <p class="pa"> Author:<%= courselist[i].author %> </p>
-            <p class="pa"><i class="fa-solid fa-user-graduate"></i></P>
+            <div style="display: flex; flex-direction:row; height:50px;">
+                
+                    <p class="pa"><i class="fa-solid fa-user-graduate"></i> </P>
+                    <p><%= numbercount[courselist[i].coursename+courselist[i].author] %></p>
+
+            </div>
             <div class="butt">
             <input type="submit"class="en-button"  value="View Course"/>
-            <input class="en-button" type="button" onclick="enroll(this)" data-coursename="<%= courselist[i].coursename %>" value="Enroll"/>
+            <input class="en-button" type="button" onclick="enroll(this)" data-coursename="<%= courselist[i].coursename %>" data-author="<%= courselist[i].author %>" value="Enroll"/>
             </div>
             </div>
         </div>

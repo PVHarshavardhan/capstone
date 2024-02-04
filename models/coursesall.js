@@ -12,23 +12,27 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-    static getChapters(coursename) {
-      return this.findAll({where :{ coursename}})
+    static getChapters(coursename,author) {
+      return this.findAll({where:{coursename,author}})
     }
 
     static getCourses() {
-      return this.findAll();
+      return this.findAll({
+        attributes: ['coursename','author'],
+        group:['coursename','author']
+      });
     }
 
     static getDescription(coursename,chaptername) {
       return this.findOne({where:{coursename:coursename,chapter:chaptername}})
     }
+
   }
   Coursesall.init({
     coursename: DataTypes.STRING,
     author: DataTypes.STRING,
     chapter: DataTypes.STRING,
-    chapterdescription: DataTypes.STRING
+    chapterdescription: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Coursesall',

@@ -12,15 +12,29 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static getEnrollStatus(userid,coursename,author) {
+      return this.findAll({where:{ userid, coursename,author}})
+    }
 
-    static getEnrollStatus(userid,coursename) {
-      return this.findAll({where:{ userid, coursename}})
+    static getEnrolled(userid){
+      return this.findAll({where:{userid},
+        attributes: ['coursename','author'],
+        group:['coursename','author']
+      })
+    }
+
+    static getEnrollNumber() {
+      return this.findAll({
+        attributes: ['coursename', [sequelize.fn('COUNT',sequelize.col('userid')), 'studentcount'],'author'],
+        group:['coursename','author']
+      })
     }
   }
   Enroll.init({
     userid: DataTypes.INTEGER,
     coursename: DataTypes.STRING,
-    enroll: DataTypes.STRING
+    enroll: DataTypes.STRING,
+    author: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Enroll',

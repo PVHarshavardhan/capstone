@@ -13,15 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
     static getPages(coursename,chaptername) {
-      return this.findAll({where :{ coursename,chaptername}})
+      return this.findAll({where:{coursename,chaptername}})
     }
     static getContent(pagename,coursename,chaptername) {
       return this.findOne({where:{pagename,coursename,chaptername}})
     }
+
   }
   Pages.init({
     pagename: DataTypes.STRING,
-    content: DataTypes.STRING,
+    content: DataTypes.TEXT,
     coursename: DataTypes.STRING,
     chaptername: DataTypes.STRING
   }, {

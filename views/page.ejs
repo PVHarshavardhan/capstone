@@ -9,13 +9,13 @@
 </head>
 <body>
     <div class="tags">
-    <a href="/" class="tag">Home</a><p>></p>
+    <a href="/home" class="tag">Home</a><p>></p>
     <form action="/course" method="post">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input name = "coursename" type="hidden" value="<%= coursename %>" />
         <a ><button class="tag" type="submit"><%= coursename %></button></a>
     </form><p>></p>
-    <p class ="tag"><%= chaptername %></p>
+    <p><%= chaptername %></p>
     </div>
 
 
