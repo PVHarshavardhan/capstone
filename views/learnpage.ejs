@@ -29,23 +29,42 @@
 
 
     <div class="back">
-    <form action="/learnpage" method="post">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <input type="hidden" value="<%= coursename %>" name="coursename" />
-        <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
-        <input type="hidden" type="text" name="pagename" value="<%= nextpage %>" />
-        <input name="author" type="hidden" value="<%= author %>"/>
+    
         <h1 class="heading"><%= pagename %></h1>
         <p class="para"><%= pagecontent %></p>
         <div style="display: flex; flex-direction:row;">
-            <div style="width: 300px;">
-                <button class="signup-button" >Mark as Read</button>
-               <button class="signup-button" type="submit" >Next</button>
-            </div>
+            <form action="/markreadstat" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" value="<%= coursename %>" name="coursename" />
+                <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
+                <input type="hidden" type="text" name="pagename" value="<%= pagename %>" />
+                <input name="author" type="hidden" value="<%= author %>"/>
+                <div style="width: 300px;">
+                    <% if (readstat.length>0) { %>
+                        <button class="signup-button" style="color: rgb(54, 212, 57);">Completed</button>
+                    <% } else { %>
+                    <button class="signup-button" >Mark as Read</button>
+                    <% } %>
+                   
+                </div>
+
+
+
+
+            </form>
+            
+            <form action="/learnpage" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" value="<%= coursename %>" name="coursename" />
+                <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
+                <input type="hidden" type="text" name="pagename" value="<%= nextpage %>" />
+                <input name="author" type="hidden" value="<%= author %>"/>
+                <button class="signup-button" type="submit" >Next</button>
+            </form>
             </div>
 
         
-        </form>
+        
     </div>
 </body>
 </html>

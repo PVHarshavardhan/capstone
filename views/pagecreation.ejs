@@ -27,17 +27,18 @@
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input class="input" type="hidden" name="coursename" value="<%= coursename %>"/>
         <label for="pagename">Title:</label><br>
-        <input class="input" type="text" name="pagename"/>
+        <input class="input" type="text" required name="pagename"/>
         <div>
         <label>Chapter: </label><br>
-        <select name="chaptername" id="chapter">
+        <select name="chaptername" required id="chapter">
+            <option value="" >select</option>
             <% for(var i=0;i< chapters.length;i++) { %>
             <option value="<%= chapters[i].chapter %>"><%= chapters[i].chapter %></option>
             <% } %>
           </select>
         </div>
         <label>Content:</label><br>
-        <textarea name="content" content"></textarea>
+        <textarea name="content" content" required></textarea>
         <br>
         <button class ="button" type="submit">create</button>
     </form>

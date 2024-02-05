@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="<%= csrfToken %>"/> 
     <link href="./css/style.css" rel="stylesheet">
     <title>Document</title>
+    
 </head>
 <body>
     <div class = "tags">
@@ -29,12 +30,23 @@
 
 
     <div class="back">
-    <form action="/learnpage" method="post">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <form action="/markreadstat" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
         <input type="hidden" value="<%= coursename %>" name="coursename" />
-        <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
+        <input type="hidden"  name="chaptername" value="<%= chaptername %>" />
+        <input type="hidden" name="author" value="<%= author %>"/>
+        <input type="hidden" name="pagename" value="<%= pagename %>"/>
         <h1 class="heading"><%= pagename %></h1>
         <p class="para"><%= pagecontent %></p>   
+        <div style="width: 300px;">
+            <% if (readstat.length>0) { %>
+                <button class="signup-button" style="color: rgb(54, 212, 57);">Completed</button>
+            <% } else { %>
+            <button class="signup-button" type="submit">Mark as Read</button>
+            <% } %>
+           
+        </div>
+        </div>
         </form>
     </div>
 </body>

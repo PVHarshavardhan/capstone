@@ -3,7 +3,7 @@ const app = express();
 const csrf =require("tiny-csrf")
 const cookieParser= require("cookie-parser")
 const path = require("path");
-const { Coursesall, Pages, Members,Enroll } = require('./models')
+const { Coursesall, Pages, Members,Enroll,Markstat } = require('./models')
 const bodyParser = require('body-parser')
 const { error } = require('console');
 app.use(express.static(path.join(__dirname, "public")));
@@ -85,7 +85,7 @@ app.get('/',(request, response) => {
     response.render('start',{csrfToken: request.csrfToken()});
 })
 
-app.get('/home', async (request, response) => {
+app.get('/home',connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const courseList = await Coursesall.getCourses();
 
     const enrollednumber = await Enroll.getEnrollNumber();
@@ -100,7 +100,7 @@ app.get('/home', async (request, response) => {
     response.render('index',{courselist:courseList,numbercount:numbercount,enrolled:enrolled,username:request.user.firstName,role:request.user.role,csrfToken: request.csrfToken()})
 })
 
-app.get('/coursecreation', (request, response) => {
+app.get('/coursecreation',connectEnsureLogin.ensureLoggedIn(), (request, response) => {
     response.render('coursecreation',{csrfToken: request.csrfToken()})
 })
 
@@ -244,7 +244,7 @@ app.get("/signout", (request, response, next) => {
   
 
 
-  app.get("/listcourses",(request, response) => {
+  app.get("/listcourses",connectEnsureLogin.ensureLoggedIn(),(request, response) => {
     response.render("listcourses");
   })
 
@@ -272,7 +272,7 @@ app.get("/signout", (request, response, next) => {
   }
   })
 
-  app.post("/viewcourse", async (request, response) => {
+  app.post("/viewcourse",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     
     const chapters = await Coursesall.getChapters(request.body.coursename,request.body.author);
     const enrollstatus = await Enroll.getEnrollStatus(request.user.id,request.body.coursename,request.body.author);
@@ -282,7 +282,7 @@ app.get("/signout", (request, response, next) => {
     
   })
 
-  app.post("/enrollinginview", async (request, response)=> {
+  app.post("/enrollinginview",connectEnsureLogin.ensureLoggedIn(), async (request, response)=> {
     
     console.log(request.body.author);
     const chapters = await Coursesall.getChapters(request.body.coursename,request.body.author);
@@ -298,7 +298,7 @@ app.get("/signout", (request, response, next) => {
 
   })
 
-  app.post("/readpages", async (request, response) => {
+  app.post("/readpages",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     
     console.log(request.body.author);
     const courseName=request.body.coursename;
@@ -309,28 +309,31 @@ app.get("/signout", (request, response, next) => {
   })
 
 
-  app.post("/learnpage", async (request, response) => {
+  app.post("/learnpage",connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const courseName=request.body.coursename;
     const chapterName=request.body.chaptername;
     const pagesList =await Pages.getPages(courseName,chapterName);
     const pagecontent = await Pages.getContent(request.body.pagename,courseName,chapterName);
+    const readstat = await Markstat.getReadStatus(request.user.id,courseName,chapterName,request.body.author,request.body.pagename);
     for(let i=0; i<pagesList.length;i++) {
       if(pagesList[i].pagename==request.body.pagename){
       if(i!=pagesList.length-1) {
-        response.render("learnpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,author:request.body.author,pagecontent:pagecontent.content,nextpage:pagesList[i+1].pagename,csrfToken: request.csrfToken()})
+        response.render("learnpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,readstat:readstat,author:request.body.author,pagecontent:pagecontent.content,nextpage:pagesList[i+1].pagename,csrfToken: request.csrfToken()})
         break;
       }
       else {
-        response.render("endpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,author:request.body.author,pagecontent:pagecontent.content,csrfToken: request.csrfToken()})
+        response.render("endpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,readstat:readstat,author:request.body.author,pagecontent:pagecontent.content,csrfToken: request.csrfToken()})
       }
     }
   }
+
+
   })
-  app.get("/passwordform", (request,response) => {
+  app.get("/passwordform",connectEnsureLogin.ensureLoggedIn(), (request,response) => {
     response.render("changepassword",{csrfToken: request.csrfToken()})
   })
 
-  app.post("/changepassword", async (request,response) => {
+  app.post("/changepassword",connectEnsureLogin.ensureLoggedIn(), async (request,response) => {
     const checkstatus =await bcrypt.compare(request.body.currentpassword,request.user.password);
     if (checkstatus) {
       if(request.body.newpassword==request.body.confirmpassword){
@@ -353,9 +356,45 @@ app.get("/signout", (request, response, next) => {
     }
     else{
       console.log("incorrect details");
-      response.redirect("/changepassword")
+      
     }
 
     
   })
+
+
+  app.post("/markreadstat",connectEnsureLogin.ensureLoggedIn(), async (request,response)=> {
+    try {
+      const result = await Markstat.create({
+        userid:request.user.id,
+        coursename:request.body.coursename,
+        chaptername:request.body.chaptername,
+        author:request.body.author,
+        pagename:request.body.pagename
+      })
+      console.log(result)
+      const courseName=request.body.coursename;
+    const chapterName=request.body.chaptername;
+    const pagesList =await Pages.getPages(courseName,chapterName);
+    const pagecontent = await Pages.getContent(request.body.pagename,courseName,chapterName);
+    const readstat = await Markstat.getReadStatus(request.user.id,courseName,chapterName,request.body.author,request.body.pagename);
+    for(let i=0; i<pagesList.length;i++) {
+      if(pagesList[i].pagename==request.body.pagename){
+      if(i!=pagesList.length-1) {
+        response.render("learnpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,readstat:readstat,author:request.body.author,pagecontent:pagecontent.content,nextpage:pagesList[i+1].pagename,csrfToken: request.csrfToken()})
+        break;
+      }
+      else {
+        response.render("endpage", {coursename:courseName,chaptername:chapterName,pagename:request.body.pagename,readstat:readstat,author:request.body.author,pagecontent:pagecontent.content,pagename:request.body.pagename,csrfToken: request.csrfToken()})
+      }
+    }
+  }
+      
+
+    } catch(error){
+      console.log(error)
+    }
+  })
+
+
 module.exports = app;

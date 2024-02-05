@@ -20,7 +20,7 @@
         <form action="/course" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <label class = "label">What is the name of the course?</label><br><br>
-            <input  class=" input" name ="coursename" type="text" placeholder="Enter course name"/>
+            <input  class=" input" name ="coursename" type="text" placeholder="Enter course name" required/>
             <br>
             <button class="button" type="submit">Submit</button>
         </form>

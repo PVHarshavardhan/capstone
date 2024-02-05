@@ -25,10 +25,10 @@
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input class="input" name = "coursename" type="hidden" value="<%= coursename %>" />
         <label class="label" for ="chaptername">What is the name of Chapter?</label><br>
-        <input  class="input" type="text" name = "chaptername"/><br>
+        <input  class="input" type="text" required name = "chaptername"/><br>
 
         <label for = "description">Description:</label><br>
-        <input  class="input " type="text" name="description"><br>
+        <input  class="input "required type="text" name="description"><br>
         <button type="submit">Create</button>
     </form>
 </div>
