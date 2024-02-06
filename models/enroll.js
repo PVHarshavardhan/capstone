@@ -29,6 +29,13 @@ module.exports = (sequelize, DataTypes) => {
         group:['coursename','author']
       })
     }
+
+    static getNumber(coursename,author) {
+      return this.findAll( {where :{coursename,author},
+        
+      })
+
+    }
   }
   Enroll.init({
     userid: DataTypes.INTEGER,

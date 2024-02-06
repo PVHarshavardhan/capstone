@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
+    <link href="./css/style.css" rel="stylesheet">
+    <title>Viewreport</title>
+</head>
+<body>
+    <div class="tags">
+        <a href="/home" class="tag">Home </a> 
+        <p>></p>
+        <p  > My Courses</p>
+        </div>
+        <div class="back">
+            <% for(let i=0;i<mycourses.length;i++) { %>
+                <div class="butt" >
+                <p class="signup-button" style="border: 1px black; background-color: grey; color: white; border-radius: 4px; width:500px"><%= mycourses[i].coursename %> course was Enrolled by :<%= courseEnrolledNumber[mycourses[i].coursename] %> members</p>
+            </div>
+                <% } %>
+            </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
+    <link href="./css/style.css" rel="stylesheet">
+    <title>Mycourses</title>
+</head>
+<body>
+    <div class="tags">
+        <a href="/home" class="tag">Home </a> 
+        <p>></p>
+        <p  > My Courses</p>
+        </div>
+        <ul>
+            <% for(let i=0;i<mycourses.length;i++) { %>
+                <li class="signup-button" style="border: 1px black; background-color: grey; color: white; border-radius: 4px; width:200px"><%= mycourses[i].coursename %></li><br>
+                <% } %>
+        </ul>
+</body>
+</html>

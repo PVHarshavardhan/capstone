@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     static getReadStatus(userid,coursename,chaptername,author,pagename) {
       return this.findAll({where:{userid,coursename,chaptername,author,pagename}})
     }
+
+    static getMarkedCount(userid,coursename,author) {
+      return this.findAll({where:{userid,coursename,author}});
+    }
   }
   Markstat.init({
     userid: DataTypes.INTEGER,
