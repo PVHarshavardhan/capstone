@@ -15,6 +15,7 @@ app.use(cookieParser("shh! some secret string"));
 app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
 app.set("view engine", "ejs");
 app.use(express.json());
+const flash = require("connect-flash")
 
 
 const passport = require("passport");
@@ -24,6 +25,8 @@ const session = require("express-session");
 const LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+
+
 app.use(
     session({
       secret: "my-super-secret-key-45678854345897986754",
@@ -32,9 +35,12 @@ app.use(
       },
     }),
   );
+  app.use(flash());
+  app.use(function (request, response, next) {
+    response.locals.messages = request.flash();
+    next();
+  });
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 passport.use(
@@ -80,6 +86,9 @@ passport.deserializeUser((id, done) => {
         done(error, null);
       });
   });
+
+  app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/',(request, response) => {
     response.render('start',{csrfToken: request.csrfToken()});

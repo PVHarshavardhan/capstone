@@ -9,6 +9,17 @@ function extractCsrfToken(res) {
   return $("[name=_csrf]").val();
 }
 
+const login = async (agent, username, password) => {
+  let res = await agent.get("/login");
+  let csrfToken = extractCsrfToken(res);
+  res = await agent.post("/session").send({
+    email: username,
+    password,
+    _csrf: csrfToken,
+  });
+};
+
+
 describe("LMS test suite", () => {
     beforeAll(async () => {
       await db.sequelize.sync({ force: true });
@@ -42,6 +53,18 @@ describe("LMS test suite", () => {
       res = await agent.get("/home");
       expect(res.statusCode).toBe(302);
     });
+
+    // test("Course creation", async () => {
+    //   const agent = request.agent(server);
+    //   await login(agent, "ab@gmail.com", "1");
+    //   const res = await agent.get("/home");
+    //   const csrfToken = extractCsrfToken(res);
+    //   const response = await agent.get("/").send({
+    //     _csrf: csrfToken,
+    //   });
+    //   console.log(response,"Course ");
+    //   expect(response.statusCode).toBe(200);
+    // });
 
 
 });
