@@ -412,7 +412,31 @@ app.get("/signout", (request, response, next) => {
     console.log(numbercount)
 
     const enrolled = await Enroll.getEnrolled(request.user.id);
-    response.render('index',{courselist:courseList,numbercount:numbercount,enrolled:enrolled,username:request.user.firstName,role:request.user.role,csrfToken: request.csrfToken()})
+    let totalpages =0;
+    let markedpages=0;
+    const progress={}
+    for(let i=0;i<enrolled.length;i++) {
+      totalpages = 0;
+      markedpages = 0;
+      
+      const chaptersEnrolled = await Coursesall.getChapters(enrolled[i].coursename,enrolled[i].author);
+      for(let j=0;j<chaptersEnrolled.length;j++) {
+        console.log(chaptersEnrolled[j].coursename,chaptersEnrolled[j].chapter);
+      const enrolledpages = await Pages.getPages(chaptersEnrolled[j].coursename,chaptersEnrolled[j].chapter);
+      if(enrolledpages.length!=0){
+        totalpages=totalpages+enrolledpages.length;
+      }
+      }
+
+      
+      const markedcount = await  Markstat.getMarkedCount(request.user.id,enrolled[i].coursename,enrolled[i].author)
+      if (markedcount.length !=0){
+        markedpages = markedcount.length;
+      }
+      markedpages = markedcount.length;
+      progress[enrolled[i].coursename+enrolled[i].author]= Math.round(markedpages/totalpages*1000)/10;
+    }
+    response.render('index',{courselist:courseList,numbercount:numbercount,enrolled:enrolled,username:request.user.firstName,role:request.user.role,progress:progress,csrfToken: request.csrfToken()})
     }
     else{
       console.log("incorrect details");
