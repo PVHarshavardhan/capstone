@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>"/> 
+    <link href="./css/style.css" rel="stylesheet">
+    <title>Displaypages</title>
+</head>
+<body>
+    <div class = "tags">
+    <a class="tag" href="/home">Home</a><p>></p>
+    <form action="/course" method="post">
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button  class =" tagbutton tag "type="submit"><%= coursename %></button>
+    </form><p>></p>
+    <form action="/page" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <input name = "coursename" type="hidden" value="<%= coursename %>" />
+        <input name = "chaptername" type="hidden" value="<%= chaptername %>" />
+        <button type="submit" class =" tagbutton tag"><%= chaptername %></button>
+    </form><p>></p>
+    <P><%= pagename %></P>
+    </div>
+
+
+
+    <div class="back">
+    <form action="/pagecreation" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <input type="hidden" value="<%= coursename %>" name="coursename" />
+        <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
+        <h1 class="heading"><%= pagename %></h1>
+        <p class="para"><%= content %></p>
+        
+        </form>
+    </div>
+</body>
+</html>

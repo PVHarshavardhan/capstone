@@ -29,7 +29,17 @@
             <% } else { %>
             <ul>
                 <% for (let i=0;i<pageslist.length;i++) { %>
-                    <li><%= pageslist[i].pagename %></li>
+                    
+                        <form action="/editpage" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <input type="hidden" value="<%= coursename %>" name="coursename" />
+                            <input type="hidden" type="text" name="chaptername" value="<%= chaptername %>" />
+                            <input type="hidden" type="text" name="pagename" value="<%= pageslist[i].pagename %>" />
+                            <input type="submit" class="signup-button" style="border: 1px black; background-color: grey; color: white; border-radius: 4px; width:200px"value="<%= pageslist[i].pagename %>"/>
+                        </form>
+                        
+                    
+                    
                 <% } %>
             </ul>
             <% } %>

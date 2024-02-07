@@ -15,8 +15,16 @@
         </div>
         <ul>
             <% for(let i=0;i<mycourses.length;i++) { %>
-                <li class="signup-button" style="border: 1px black; background-color: grey; color: white; border-radius: 4px; width:200px"><%= mycourses[i].coursename %></li><br>
+                <form action="/course" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" value="<%= mycourses[i].coursename %>" name="coursename" />
+            <input type="hidden"  name="chaptername" value="<%= mycourses[i].chapter %>" />
+
+                
+                <button class="signup-button" style="border: 1px black; background-color: grey; color: white; border-radius: 4px; width:200px"><%= mycourses[i].coursename %></button><br>
+            </form>
                 <% } %>
+                
         </ul>
 </body>
 </html>

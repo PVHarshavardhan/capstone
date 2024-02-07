@@ -233,6 +233,17 @@ app.post("/showpage",connectEnsureLogin.ensureLoggedIn(), async (request, respon
 
 })
 
+app.post("/editpage" ,async(request,response) => {
+  console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
+  console.log(request.body.coursename)
+  console.log(request.body.chaptername)
+  const result = await Pages.getContent(request.body.pagename,request.body.coursename,request.body.chaptername)
+  response.render("pageview", { pagename:result.pagename,
+    content:result.content,
+    coursename:result.coursename,
+    chaptername:result.chaptername, csrfToken: request.csrfToken()})
+})
+
 
 
 

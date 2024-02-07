@@ -24,7 +24,13 @@
         <% } else { %>
             <ul>
             <% for(let i=0;i< chapters.length; i++) { %>
-                <li class="list"><%= chapters[i].chapter %></li>
+                <form action="/page" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" value="<%= chapters[i].coursename %>" name="coursename" />
+            <input type="hidden" type="text" name="chaptername" value="<%= chapters[i].chapter %>" />
+                    <input type="submit" class="signup-button" style="border: 1px black; background-color: grey; color: white; border-radius: 4px; width:200px"value="<%= chapters[i].chapter %>"/>
+                </form>
+                
             <% } %>    
             </ul>
         <% } %>
