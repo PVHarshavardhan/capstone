@@ -34,6 +34,15 @@ describe("LMS test suite", () => {
       expect(pes.statusCode).toBe(302);
     });
 
+    test("sign out", async () => {
+      let res = await agent.get("/home");
+      expect(res.statusCode).toBe(200);
+      res = await agent.get("/signout");
+      expect(res.statusCode).toBe(302);
+      res = await agent.get("/home");
+      expect(res.statusCode).toBe(302);
+    });
+
 
 });
   

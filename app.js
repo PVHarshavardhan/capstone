@@ -137,10 +137,10 @@ app.get("/mycourses",async (request,response) => {
 })
 
 app.get("/viewreport",async (request,response) => {
-  const myCourses = await Coursesall.getMyCourses(request.user.firstName);
+  const myCourses = await Coursesall.getCourses();
   const courseEnrolledNumber ={}
   for (let i=0; i<myCourses.length;i++) {
-    const result = await Enroll.getNumber(myCourses[i].coursename,request.user.firstName);
+    const result = await Enroll.getNumber(myCourses[i].coursename,myCourses[i].author);
     if(result.length!=0) {
       courseEnrolledNumber[myCourses[i].coursename]=0;
     }
