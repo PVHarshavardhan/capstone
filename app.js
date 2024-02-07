@@ -473,8 +473,6 @@ app.get("/signout", (request, response, next) => {
       }
     }
   }
-      
-
     } catch(error){
       console.log(error)
     }
