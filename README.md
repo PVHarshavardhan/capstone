@@ -62,6 +62,7 @@ Home page
 ![image](https://github.com/PVHarshavardhan/ConnectSphere/assets/131582089/b688398f-6372-4860-a285-a93ab78859a8)
 Enrolling a new course
 ![image](https://github.com/PVHarshavardhan/ConnectSphere/assets/131582089/47857afa-2c58-4a2c-92b2-e769c98ab194)
+
 Educator creating a page in the course created
 ![image](https://github.com/PVHarshavardhan/ConnectSphere/assets/131582089/b396e1ea-97ad-4dec-b1fb-9da55737abc7)
 Ability to change Password
