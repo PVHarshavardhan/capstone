@@ -13,12 +13,12 @@ The Learning Management System (LMS) project is developed using Node.js, HTML, C
 - **Chapter Creation**: Within each course, educators can create chapters and add pages to each chapter, providing structured learning material.
 
 - **Enrollment Management**: Students can enroll in courses created by educators, gaining access to the content of the chapters they are enrolled in.
-- 
+  
 - **Change Password:**  User is able change their password.
-- 
-- **View Reports:**  Educators should have access to reports that display the number of students enrolled in their course(s) and indicate their relative popularity based on enrollment numbers.
-- 
-- --**Available and Enrolled courses**:The courses a student is enrolled in are displayed in a separate/dedicated section for easy access and navigation and all the available courses are displayed under the enrolled section
+  
+- **View Reports:**  Educators have access to reports that display the number of students enrolled in their course(s) and indicate their relative popularity based on enrollment numbers.
+  
+- **Available and Enrolled courses**:The courses a student is enrolled in are displayed in a separate/dedicated section for easy access and navigation and all the available courses are displayed under the enrolled section
 
 ## Technologies Used 💻
 
@@ -39,7 +39,7 @@ To get started with the Learning Management System (LMS), follow these steps:
 
 1. **Clone the Repository**: Clone the LMS repository to your local machine using Git:
     ```
-  git clone https://github.com/PVHarshavardhan/capstone.git
+    git clone https://github.com/PVHarshavardhan/capstone.git
     ```
 
 2. **Install Dependencies**: Navigate to the project directory and install the necessary dependencies using npm:
@@ -58,9 +58,13 @@ To get started with the Learning Management System (LMS), follow these steps:
 5. **Log In**: Log in as an educator or student using your credentials to access the respective functionalities.
 
 ## Screenshots 📷
+Home page
 ![image](https://github.com/PVHarshavardhan/ConnectSphere/assets/131582089/b688398f-6372-4860-a285-a93ab78859a8)
+Enrolling a new course
 ![image](https://github.com/PVHarshavardhan/ConnectSphere/assets/131582089/47857afa-2c58-4a2c-92b2-e769c98ab194)
+Educator creating a page in the course created
 ![image](https://github.com/PVHarshavardhan/ConnectSphere/assets/131582089/b396e1ea-97ad-4dec-b1fb-9da55737abc7)
+Ability to change Password
 ![image](https://github.com/PVHarshavardhan/ConnectSphere/assets/131582089/33480ef8-cf33-401e-84b8-b8b0b3e971f3)
 
 
