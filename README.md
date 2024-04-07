@@ -76,7 +76,6 @@ Ability to change Password
 
 ## Contributors 👥
 - PV Harshavardhan (@pvharshavardhan)
-- Vitta Yaswanth (@vittayaswanth)
 
 
 ## License 📜
